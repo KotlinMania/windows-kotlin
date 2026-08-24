@@ -1,22 +1,13 @@
-#if canImport(Testing)
 import Testing
 import Windows
 
-@Suite("Windows Swift Export Smoke Tests")
+@Suite("Windows Swift Export Suite")
 struct WindowsExportTests {
-    @Test("Swift module imports cleanly")
+    @Test("Swift module imports cleanly and basic types work")
     func swiftModuleLoads() throws {
-        #expect(true)
+        _ = Windows.shared
+        let dt = foundation.DateTime(universalTime: 10_000)
+        #expect(dt.universalTime == 10_000)
     }
 }
-#elseif canImport(XCTest)
-import XCTest
-import Windows
-
-final class WindowsExportTests: XCTestCase {
-    func testSwiftModuleLoads() throws {
-        XCTAssertTrue(true, "Windows swift module imported cleanly")
-    }
-}
-#endif
 
