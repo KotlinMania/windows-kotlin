@@ -4,35 +4,35 @@ package io.github.kotlinmania.windows.win32.networking.winsock
 /**
  * Socket address family.
  */
-public class ADDRESS_FAMILY(
+public class AddressFamily(
     public val value: UShort = 0u,
 ) {
-    override fun equals(other: Any?): Boolean = other is ADDRESS_FAMILY && value == other.value
+    override fun equals(other: Any?): Boolean = other is AddressFamily && value == other.value
 
     override fun hashCode(): Int = value.hashCode()
 
-    override fun toString(): String = "ADDRESS_FAMILY($value)"
+    override fun toString(): String = "AddressFamily($value)"
 
     public companion object {
-        public val AF_UNSPEC: ADDRESS_FAMILY = ADDRESS_FAMILY(0u)
-        public val AF_UNIX: ADDRESS_FAMILY = ADDRESS_FAMILY(1u)
-        public val AF_INET: ADDRESS_FAMILY = ADDRESS_FAMILY(2u)
-        public val AF_IMPLINK: ADDRESS_FAMILY = ADDRESS_FAMILY(3u)
-        public val AF_PUP: ADDRESS_FAMILY = ADDRESS_FAMILY(4u)
-        public val AF_IPX: ADDRESS_FAMILY = ADDRESS_FAMILY(6u)
-        public val AF_ISO: ADDRESS_FAMILY = ADDRESS_FAMILY(7u)
-        public val AF_ECMA: ADDRESS_FAMILY = ADDRESS_FAMILY(8u)
-        public val AF_SNA: ADDRESS_FAMILY = ADDRESS_FAMILY(11u)
-        public val AF_NETBIOS: ADDRESS_FAMILY = ADDRESS_FAMILY(17u)
-        public val AF_INET6: ADDRESS_FAMILY = ADDRESS_FAMILY(23u)
-        public val AF_IRDA: ADDRESS_FAMILY = ADDRESS_FAMILY(26u)
+        public val AF_UNSPEC: AddressFamily = AddressFamily(0u)
+        public val AF_UNIX: AddressFamily = AddressFamily(1u)
+        public val AF_INET: AddressFamily = AddressFamily(2u)
+        public val AF_IMPLINK: AddressFamily = AddressFamily(3u)
+        public val AF_PUP: AddressFamily = AddressFamily(4u)
+        public val AF_IPX: AddressFamily = AddressFamily(6u)
+        public val AF_ISO: AddressFamily = AddressFamily(7u)
+        public val AF_ECMA: AddressFamily = AddressFamily(8u)
+        public val AF_SNA: AddressFamily = AddressFamily(11u)
+        public val AF_NETBIOS: AddressFamily = AddressFamily(17u)
+        public val AF_INET6: AddressFamily = AddressFamily(23u)
+        public val AF_IRDA: AddressFamily = AddressFamily(26u)
     }
 }
 
 /**
  * An IPv4 Internet address.
  */
-public data class IN_ADDR(
+public data class InAddr(
     public val sAddr: UInt = 0u,
 ) {
     public fun toOctets(): List<UByte> {
@@ -49,16 +49,16 @@ public data class IN_ADDR(
     }
 
     public companion object {
-        public fun fromOctets(b1: UByte, b2: UByte, b3: UByte, b4: UByte): IN_ADDR {
+        public fun fromOctets(b1: UByte, b2: UByte, b3: UByte, b4: UByte): InAddr {
             val addr =
                 (b1.toUInt()) or
                     (b2.toUInt() shl 8) or
                     (b3.toUInt() shl 16) or
                     (b4.toUInt() shl 24)
-            return IN_ADDR(addr)
+            return InAddr(addr)
         }
 
-        public fun fromIpString(ip: String): IN_ADDR {
+        public fun fromIpString(ip: String): InAddr {
             val parts = ip.split(".")
             require(parts.size == 4) { "Invalid IPv4 address: $ip" }
             val b1 = parts[0].toUByte()
@@ -73,17 +73,17 @@ public data class IN_ADDR(
 /**
  * An IPv6 Internet address (16 octets).
  */
-public data class IN6_ADDR(
+public data class In6Addr(
     public val bytes: List<UByte> = List(16) { 0u },
 ) {
     init {
-        require(bytes.size == 16) { "IN6_ADDR requires exactly 16 bytes" }
+        require(bytes.size == 16) { "In6Addr requires exactly 16 bytes" }
     }
 
     public companion object {
-        public fun fromBytes(byteArray: ByteArray): IN6_ADDR {
-            require(byteArray.size == 16) { "IN6_ADDR requires exactly 16 bytes" }
-            return IN6_ADDR(byteArray.map { it.toUByte() })
+        public fun fromBytes(byteArray: ByteArray): In6Addr {
+            require(byteArray.size == 16) { "In6Addr requires exactly 16 bytes" }
+            return In6Addr(byteArray.map { it.toUByte() })
         }
     }
 }
@@ -91,36 +91,36 @@ public data class IN6_ADDR(
 /**
  * A socket address for IPv4.
  */
-public data class SOCKADDR_IN(
-    public val sinFamily: ADDRESS_FAMILY = ADDRESS_FAMILY.AF_INET,
+public data class SockaddrIn(
+    public val sinFamily: AddressFamily = AddressFamily.AF_INET,
     public val sinPort: UShort = 0u,
-    public val sinAddr: IN_ADDR = IN_ADDR(),
+    public val sinAddr: InAddr = InAddr(),
 )
 
 /**
  * A socket address for IPv6.
  */
-public data class SOCKADDR_IN6(
-    public val sin6Family: ADDRESS_FAMILY = ADDRESS_FAMILY.AF_INET6,
+public data class SockaddrIn6(
+    public val sin6Family: AddressFamily = AddressFamily.AF_INET6,
     public val sin6Port: UShort = 0u,
     public val sin6Flowinfo: UInt = 0u,
-    public val sin6Addr: IN6_ADDR = IN6_ADDR(),
+    public val sin6Addr: In6Addr = In6Addr(),
     public val sin6ScopeId: UInt = 0u,
 )
 
 /**
  * A union / polymorphic socket address representing either IPv4 or IPv6.
  */
-public data class SOCKADDR_INET(
-    public val family: ADDRESS_FAMILY = ADDRESS_FAMILY.AF_UNSPEC,
-    public val ipv4: SOCKADDR_IN? = null,
-    public val ipv6: SOCKADDR_IN6? = null,
+public data class SockaddrInet(
+    public val family: AddressFamily = AddressFamily.AF_UNSPEC,
+    public val ipv4: SockaddrIn? = null,
+    public val ipv6: SockaddrIn6? = null,
 ) {
     public companion object {
-        public fun fromIpv4(addr: SOCKADDR_IN): SOCKADDR_INET =
-            SOCKADDR_INET(family = ADDRESS_FAMILY.AF_INET, ipv4 = addr, ipv6 = null)
+        public fun fromIpv4(addr: SockaddrIn): SockaddrInet =
+            SockaddrInet(family = AddressFamily.AF_INET, ipv4 = addr, ipv6 = null)
 
-        public fun fromIpv6(addr: SOCKADDR_IN6): SOCKADDR_INET =
-            SOCKADDR_INET(family = ADDRESS_FAMILY.AF_INET6, ipv4 = null, ipv6 = addr)
+        public fun fromIpv6(addr: SockaddrIn6): SockaddrInet =
+            SockaddrInet(family = AddressFamily.AF_INET6, ipv4 = null, ipv6 = addr)
     }
 }
