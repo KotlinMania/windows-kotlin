@@ -4,17 +4,17 @@ package io.github.kotlinmania.windows.win32.foundation
 /**
  * Returns true if this error code represents success.
  */
-public fun WIN32_ERROR.isOk(): Boolean = value == 0u
+public fun Win32Error.isOk(): Boolean = value == 0u
 
 /**
  * Returns true if this error code represents a failure.
  */
-public fun WIN32_ERROR.isErr(): Boolean = !isOk()
+public fun Win32Error.isErr(): Boolean = !isOk()
 
 /**
  * Converts this Win32 error code into a standard HRESULT value.
  */
-public fun WIN32_ERROR.toHresult(): Int {
+public fun Win32Error.toHresult(): Int {
     if (value == 0u) return 0
     val facilityWin32 = 7
     val severityError = 1
@@ -22,12 +22,12 @@ public fun WIN32_ERROR.toHresult(): Int {
 }
 
 /**
- * Extracts a WIN32_ERROR from an HRESULT if it has FACILITY_WIN32.
+ * Extracts a Win32Error from an HRESULT if it has FACILITY_WIN32.
  */
-public fun WIN32_ERROR.Companion.fromHresult(hresult: Int): WIN32_ERROR? {
+public fun Win32Error.Companion.fromHresult(hresult: Int): Win32Error? {
     val facility = (hresult ushr 16) and 0x7FF
     return if (facility == 7) {
-        WIN32_ERROR((hresult and 0xFFFF).toUInt())
+        Win32Error((hresult and 0xFFFF).toUInt())
     } else {
         null
     }
@@ -36,7 +36,7 @@ public fun WIN32_ERROR.Companion.fromHresult(hresult: Int): WIN32_ERROR? {
 /**
  * Converts this error code into a Kotlin [Result].
  */
-public fun WIN32_ERROR.ok(): Result<Unit> =
+public fun Win32Error.ok(): Result<Unit> =
     if (isOk()) {
         Result.success(Unit)
     } else {

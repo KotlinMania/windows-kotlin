@@ -8,8 +8,8 @@ import io.github.kotlinmania.windows.win32.foundation.NTSTATUS
 import io.github.kotlinmania.windows.win32.foundation.POINT
 import io.github.kotlinmania.windows.win32.foundation.RECT
 import io.github.kotlinmania.windows.win32.foundation.SIZE
-import io.github.kotlinmania.windows.win32.foundation.VARIANT_BOOL
-import io.github.kotlinmania.windows.win32.foundation.WIN32_ERROR
+import io.github.kotlinmania.windows.win32.foundation.VariantBool
+import io.github.kotlinmania.windows.win32.foundation.Win32Error
 import io.github.kotlinmania.windows.win32.foundation.asBool
 import io.github.kotlinmania.windows.win32.foundation.fromHresult
 import io.github.kotlinmania.windows.win32.foundation.isErr
@@ -26,18 +26,18 @@ import kotlin.test.assertTrue
 class Win32FoundationTest {
     @Test
     fun testWin32Error() {
-        val ok = WIN32_ERROR.ERROR_SUCCESS
+        val ok = Win32Error.ERROR_SUCCESS
         assertTrue(ok.isOk())
         assertFalse(ok.isErr())
         assertTrue(ok.ok().isSuccess)
         assertEquals(0, ok.toHresult())
 
-        val accessDenied = WIN32_ERROR.ERROR_ACCESS_DENIED
+        val accessDenied = Win32Error.ERROR_ACCESS_DENIED
         assertFalse(accessDenied.isOk())
         assertTrue(accessDenied.isErr())
         assertTrue(accessDenied.ok().isFailure)
         val hr = accessDenied.toHresult()
-        val extracted = WIN32_ERROR.fromHresult(hr)
+        val extracted = Win32Error.fromHresult(hr)
         assertNotNull(extracted)
         assertEquals(accessDenied.value, extracted.value)
     }
@@ -57,8 +57,8 @@ class Win32FoundationTest {
 
     @Test
     fun testVariantBool() {
-        val t = VARIANT_BOOL.VARIANT_TRUE
-        val f = VARIANT_BOOL.VARIANT_FALSE
+        val t = VariantBool.VARIANT_TRUE
+        val f = VariantBool.VARIANT_FALSE
         assertTrue(t.asBool())
         assertFalse(f.asBool())
         assertTrue(t.ok().isSuccess)
