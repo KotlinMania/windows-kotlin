@@ -1,3 +1,4 @@
+// port-lint: tests windows/src/Windows/Win32/Networking/WinSock/mod.rs
 package io.github.kotlinmania.windows
 
 import io.github.kotlinmania.windows.win32.networking.winsock.AddressFamily
