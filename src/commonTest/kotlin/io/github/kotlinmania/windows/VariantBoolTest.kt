@@ -1,4 +1,4 @@
-// port-lint: tests windows/src/extensions/Win32/Foundation/VARIANT_BOOL.rs
+// port-lint: tests extensions/Win32/Foundation/VARIANT_BOOL.rs
 package io.github.kotlinmania.windows
 
 import io.github.kotlinmania.windows.win32.foundation.VariantBool

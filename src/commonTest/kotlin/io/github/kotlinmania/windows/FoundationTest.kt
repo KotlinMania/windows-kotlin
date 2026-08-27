@@ -1,4 +1,4 @@
-// port-lint: tests windows/src/Windows/Foundation/mod.rs
+// port-lint: tests Windows/Foundation/mod.rs
 package io.github.kotlinmania.windows
 
 import io.github.kotlinmania.windows.foundation.AsyncStatus

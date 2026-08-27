@@ -1,4 +1,4 @@
-// port-lint: source windows/src/Windows/Foundation/Numerics/mod.rs
+// port-lint: source Windows/Foundation/Numerics/mod.rs
 package io.github.kotlinmania.windows.foundation
 
 /**
