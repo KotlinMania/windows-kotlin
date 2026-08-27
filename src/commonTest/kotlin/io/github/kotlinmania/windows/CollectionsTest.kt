@@ -1,3 +1,4 @@
+// port-lint: tests windows/src/Windows/Foundation/Collections/mod.rs
 package io.github.kotlinmania.windows
 
 import io.github.kotlinmania.windows.foundation.collections.CollectionChange
