@@ -1,4 +1,4 @@
-// port-lint: source extensions/Foundation/TimeSpan.rs
+// port-lint: source windows/src/extensions/Foundation/TimeSpan.rs
 package io.github.kotlinmania.windows.foundation
 
 import kotlin.time.Duration
