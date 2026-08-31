@@ -1,4 +1,4 @@
-// port-lint: source extensions/Win32/Foundation/VARIANT_BOOL.rs
+// port-lint: source windows/src/extensions/Win32/Foundation/VARIANT_BOOL.rs
 package io.github.kotlinmania.windows.win32.foundation
 
 /**
