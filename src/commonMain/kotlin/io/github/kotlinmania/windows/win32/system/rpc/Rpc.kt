@@ -1,4 +1,4 @@
-// port-lint: source windows/src/Windows/Win32/System/Rpc/mod.rs
+// port-lint: source Windows/Win32/System/Rpc/mod.rs
 package io.github.kotlinmania.windows.win32.system.rpc
 
 /**

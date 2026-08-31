@@ -1,4 +1,4 @@
-// port-lint: tests windows/src/Windows/Win32/System/Rpc/mod.rs
+// port-lint: tests Windows/Win32/System/Rpc/mod.rs
 package io.github.kotlinmania.windows
 
 import io.github.kotlinmania.windows.win32.system.rpc.RpcStatus
