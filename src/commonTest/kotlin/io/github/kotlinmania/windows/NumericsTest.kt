@@ -1,4 +1,4 @@
-// port-lint: tests windows/src/Windows/Foundation/Numerics/mod.rs
+// port-lint: tests Windows/Foundation/Numerics/mod.rs
 package io.github.kotlinmania.windows
 
 import io.github.kotlinmania.windows.foundation.Matrix3x2
