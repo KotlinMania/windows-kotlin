@@ -347,3 +347,148 @@ public data class PROPERTYKEY(
     public val fmtid: String = "",
     public val pid: UInt = 0u,
 )
+
+/**
+ * Represents an x- and y-coordinate pair of integers for a point (long format).
+ */
+public data class POINTL(
+    public val x: Int = 0,
+    public val y: Int = 0,
+)
+
+/**
+ * Represents an x- and y-coordinate pair of short integers.
+ */
+public data class POINTS(
+    public val x: Short = 0,
+    public val y: Short = 0,
+)
+
+/**
+ * Represents a rectangle using long integer coordinates.
+ */
+public data class RECTL(
+    public val left: Int = 0,
+    public val top: Int = 0,
+    public val right: Int = 0,
+    public val bottom: Int = 0,
+) {
+    public fun width(): Int = right - left
+
+    public fun height(): Int = bottom - top
+
+    public fun isEmpty(): Boolean = left >= right || top >= bottom
+}
+
+/**
+ * Represents an integer value passed as a message parameter.
+ */
+public data class LPARAM(
+    public val value: Long = 0L,
+)
+
+/**
+ * Represents a signed result value returned from a window procedure or callback.
+ */
+public data class LRESULT(
+    public val value: Long = 0L,
+)
+
+/**
+ * Represents an unsigned integer value passed as a message parameter.
+ */
+public data class WPARAM(
+    public val value: ULong = 0uL,
+)
+
+/**
+ * Represents a global memory handle.
+ */
+public data class HGLOBAL(
+    public val value: Long = 0L,
+) {
+    public fun isInvalid(): Boolean = value == 0L || value == -1L
+
+    public fun isNull(): Boolean = value == 0L
+}
+
+/**
+ * Represents a local memory handle.
+ */
+public data class HLOCAL(
+    public val value: Long = 0L,
+) {
+    public fun isInvalid(): Boolean = value == 0L || value == -1L
+
+    public fun isNull(): Boolean = value == 0L
+}
+
+/**
+ * Represents a resource handle.
+ */
+public data class HRSRC(
+    public val value: Long = 0L,
+) {
+    public fun isInvalid(): Boolean = value == 0L || value == -1L
+
+    public fun isNull(): Boolean = value == 0L
+}
+
+/**
+ * Options for duplicating a handle.
+ */
+public class DuplicateHandleOptions(
+    public val value: UInt = 0u,
+) {
+    public fun contains(other: DuplicateHandleOptions): Boolean = (value and other.value) == other.value
+
+    public infix fun or(other: DuplicateHandleOptions): DuplicateHandleOptions =
+        DuplicateHandleOptions(value or other.value)
+
+    public infix fun and(other: DuplicateHandleOptions): DuplicateHandleOptions =
+        DuplicateHandleOptions(value and other.value)
+
+    public fun not(): DuplicateHandleOptions = DuplicateHandleOptions(value.inv())
+
+    override fun equals(other: Any?): Boolean = other is DuplicateHandleOptions && value == other.value
+
+    override fun hashCode(): Int = value.hashCode()
+
+    override fun toString(): String = "DuplicateHandleOptions($value)"
+
+    public companion object {
+        public val DUPLICATE_CLOSE_SOURCE: DuplicateHandleOptions = DuplicateHandleOptions(1u)
+        public val DUPLICATE_SAME_ACCESS: DuplicateHandleOptions = DuplicateHandleOptions(2u)
+    }
+}
+
+/**
+ * Flags associated with a handle.
+ */
+public class HandleFlags(
+    public val value: UInt = 0u,
+) {
+    public fun contains(other: HandleFlags): Boolean = (value and other.value) == other.value
+
+    public infix fun or(other: HandleFlags): HandleFlags = HandleFlags(value or other.value)
+
+    public infix fun and(other: HandleFlags): HandleFlags = HandleFlags(value and other.value)
+
+    public fun not(): HandleFlags = HandleFlags(value.inv())
+
+    override fun equals(other: Any?): Boolean = other is HandleFlags && value == other.value
+
+    override fun hashCode(): Int = value.hashCode()
+
+    override fun toString(): String = "HandleFlags($value)"
+
+    public companion object {
+        public val HANDLE_FLAG_INHERIT: HandleFlags = HandleFlags(1u)
+        public val HANDLE_FLAG_PROTECT_FROM_CLOSE: HandleFlags = HandleFlags(2u)
+    }
+}
+
+/**
+ * The maximum length of a full path in Windows.
+ */
+public const val MAX_PATH: UInt = 260u
