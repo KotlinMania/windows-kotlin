@@ -202,4 +202,3 @@ class Win32FoundationTest {
         assertEquals(260u, MAX_PATH)
     }
 }
-
