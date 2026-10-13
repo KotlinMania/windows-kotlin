@@ -492,3 +492,186 @@ public class HandleFlags(
  * The maximum length of a full path in Windows.
  */
 public const val MAX_PATH: UInt = 260u
+
+/**
+ * Size of an app-local device identifier in bytes.
+ */
+public const val APP_LOCAL_DEVICE_ID_SIZE: UInt = 32u
+
+/**
+ * Generic access rights.
+ */
+public class GenericAccessRights(
+    public val value: UInt = 0u,
+) {
+    public fun contains(other: GenericAccessRights): Boolean = (value and other.value) == other.value
+
+    public infix fun or(other: GenericAccessRights): GenericAccessRights =
+        GenericAccessRights(value or other.value)
+
+    public infix fun and(other: GenericAccessRights): GenericAccessRights =
+        GenericAccessRights(value and other.value)
+
+    public fun not(): GenericAccessRights = GenericAccessRights(value.inv())
+
+    override fun equals(other: Any?): Boolean = other is GenericAccessRights && value == other.value
+
+    override fun hashCode(): Int = value.hashCode()
+
+    override fun toString(): String = "GenericAccessRights($value)"
+
+    public companion object {
+        public val GENERIC_ALL: GenericAccessRights = GenericAccessRights(0x10000000u)
+        public val GENERIC_EXECUTE: GenericAccessRights = GenericAccessRights(0x20000000u)
+        public val GENERIC_WRITE: GenericAccessRights = GenericAccessRights(0x40000000u)
+        public val GENERIC_READ: GenericAccessRights = GenericAccessRights(0x80000000u)
+    }
+}
+
+/**
+ * Flags for object attributes.
+ */
+public class ObjectAttributeFlags(
+    public val value: UInt = 0u,
+) {
+    public fun contains(other: ObjectAttributeFlags): Boolean = (value and other.value) == other.value
+
+    public infix fun or(other: ObjectAttributeFlags): ObjectAttributeFlags =
+        ObjectAttributeFlags(value or other.value)
+
+    public infix fun and(other: ObjectAttributeFlags): ObjectAttributeFlags =
+        ObjectAttributeFlags(value and other.value)
+
+    public fun not(): ObjectAttributeFlags = ObjectAttributeFlags(value.inv())
+
+    override fun equals(other: Any?): Boolean = other is ObjectAttributeFlags && value == other.value
+
+    override fun hashCode(): Int = value.hashCode()
+
+    override fun toString(): String = "ObjectAttributeFlags($value)"
+
+    public companion object {
+        public val OBJ_INHERIT: ObjectAttributeFlags = ObjectAttributeFlags(2u)
+        public val OBJ_PERMANENT: ObjectAttributeFlags = ObjectAttributeFlags(16u)
+        public val OBJ_EXCLUSIVE: ObjectAttributeFlags = ObjectAttributeFlags(32u)
+        public val OBJ_CASE_INSENSITIVE: ObjectAttributeFlags = ObjectAttributeFlags(64u)
+        public val OBJ_OPENIF: ObjectAttributeFlags = ObjectAttributeFlags(128u)
+        public val OBJ_OPENLINK: ObjectAttributeFlags = ObjectAttributeFlags(256u)
+        public val OBJ_KERNEL_HANDLE: ObjectAttributeFlags = ObjectAttributeFlags(512u)
+        public val OBJ_FORCE_ACCESS_CHECK: ObjectAttributeFlags = ObjectAttributeFlags(1024u)
+        public val OBJ_IGNORE_IMPERSONATED_DEVICEMAP: ObjectAttributeFlags = ObjectAttributeFlags(2048u)
+        public val OBJ_DONT_REPARSE: ObjectAttributeFlags = ObjectAttributeFlags(4096u)
+    }
+}
+
+/**
+ * Event indicating return condition of a wait operation.
+ */
+public class WaitEvent(
+    public val value: UInt = 0u,
+) {
+    override fun equals(other: Any?): Boolean = other is WaitEvent && value == other.value
+
+    override fun hashCode(): Int = value.hashCode()
+
+    override fun toString(): String = "WaitEvent($value)"
+
+    public companion object {
+        public val WAIT_OBJECT_0: WaitEvent = WaitEvent(0u)
+        public val WAIT_ABANDONED: WaitEvent = WaitEvent(128u)
+        public val WAIT_ABANDONED_0: WaitEvent = WaitEvent(128u)
+        public val WAIT_IO_COMPLETION: WaitEvent = WaitEvent(192u)
+        public val WAIT_TIMEOUT: WaitEvent = WaitEvent(258u)
+        public val WAIT_FAILED: WaitEvent = WaitEvent(0xFFFFFFFFu)
+    }
+}
+
+/**
+ * A handle to a surface.
+ */
+public data class HLSURF(
+    public val value: Long = 0L,
+) {
+    public fun isInvalid(): Boolean = value == 0L
+
+    public fun isNull(): Boolean = value == 0L
+}
+
+/**
+ * A handle to a sprite.
+ */
+public data class HSPRITE(
+    public val value: Long = 0L,
+) {
+    public fun isInvalid(): Boolean = value == 0L
+
+    public fun isNull(): Boolean = value == 0L
+}
+
+/**
+ * A handle to a string resource.
+ */
+public data class HSTR(
+    public val value: Long = 0L,
+) {
+    public fun isInvalid(): Boolean = value == 0L
+
+    public fun isNull(): Boolean = value == 0L
+}
+
+/**
+ * A handle to a user mode printer driver.
+ */
+public data class HUMPD(
+    public val value: Long = 0L,
+) {
+    public fun isInvalid(): Boolean = value == 0L
+
+    public fun isNull(): Boolean = value == 0L
+}
+
+/**
+ * A 128-bit floating point value represented by low and high 64-bit parts.
+ */
+public data class FLOAT128(
+    public val lowPart: Long = 0L,
+    public val highPart: Long = 0L,
+)
+
+/**
+ * Represents an app-local device identifier.
+ */
+public data class APP_LOCAL_DEVICE_ID(
+    public val value: ByteArray = ByteArray(32),
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is APP_LOCAL_DEVICE_ID) return false
+        return value.contentEquals(other.value)
+    }
+
+    override fun hashCode(): Int = value.contentHashCode()
+}
+
+/**
+ * A counted Unicode string.
+ */
+public data class UNICODE_STRING(
+    public val length: UShort = 0u,
+    public val maximumLength: UShort = 0u,
+    public val buffer: String = "",
+)
+
+/**
+ * An unsigned pointer-sized handle.
+ */
+public data class HANDLE_PTR(
+    public val value: ULong = 0uL,
+)
+
+/**
+ * A signed pointer-sized handle.
+ */
+public data class SHANDLE_PTR(
+    public val value: Long = 0L,
+)

@@ -1,26 +1,41 @@
 // port-lint: tests Windows/Win32/Foundation/mod.rs
 package io.github.kotlinmania.windows
 
+import io.github.kotlinmania.windows.win32.foundation.APP_LOCAL_DEVICE_ID
+import io.github.kotlinmania.windows.win32.foundation.APP_LOCAL_DEVICE_ID_SIZE
 import io.github.kotlinmania.windows.win32.foundation.COLORREF
 import io.github.kotlinmania.windows.win32.foundation.DuplicateHandleOptions
 import io.github.kotlinmania.windows.win32.foundation.FILETIME
+import io.github.kotlinmania.windows.win32.foundation.FLOAT128
+import io.github.kotlinmania.windows.win32.foundation.GenericAccessRights
 import io.github.kotlinmania.windows.win32.foundation.HANDLE
+import io.github.kotlinmania.windows.win32.foundation.HANDLE_PTR
 import io.github.kotlinmania.windows.win32.foundation.HGLOBAL
+import io.github.kotlinmania.windows.win32.foundation.HINSTANCE
 import io.github.kotlinmania.windows.win32.foundation.HLOCAL
+import io.github.kotlinmania.windows.win32.foundation.HLSURF
+import io.github.kotlinmania.windows.win32.foundation.HMODULE
 import io.github.kotlinmania.windows.win32.foundation.HRSRC
+import io.github.kotlinmania.windows.win32.foundation.HSPRITE
+import io.github.kotlinmania.windows.win32.foundation.HSTR
+import io.github.kotlinmania.windows.win32.foundation.HUMPD
 import io.github.kotlinmania.windows.win32.foundation.HandleFlags
 import io.github.kotlinmania.windows.win32.foundation.LPARAM
 import io.github.kotlinmania.windows.win32.foundation.LRESULT
 import io.github.kotlinmania.windows.win32.foundation.MAX_PATH
 import io.github.kotlinmania.windows.win32.foundation.NTSTATUS
+import io.github.kotlinmania.windows.win32.foundation.ObjectAttributeFlags
 import io.github.kotlinmania.windows.win32.foundation.POINT
 import io.github.kotlinmania.windows.win32.foundation.POINTL
 import io.github.kotlinmania.windows.win32.foundation.POINTS
 import io.github.kotlinmania.windows.win32.foundation.RECT
 import io.github.kotlinmania.windows.win32.foundation.RECTL
+import io.github.kotlinmania.windows.win32.foundation.SHANDLE_PTR
 import io.github.kotlinmania.windows.win32.foundation.SIZE
+import io.github.kotlinmania.windows.win32.foundation.UNICODE_STRING
 import io.github.kotlinmania.windows.win32.foundation.VariantBool
 import io.github.kotlinmania.windows.win32.foundation.WPARAM
+import io.github.kotlinmania.windows.win32.foundation.WaitEvent
 import io.github.kotlinmania.windows.win32.foundation.Win32Error
 import io.github.kotlinmania.windows.win32.foundation.asBool
 import io.github.kotlinmania.windows.win32.foundation.fromHresult
@@ -200,5 +215,95 @@ class Win32FoundationTest {
     @Test
     fun testMaxPath() {
         assertEquals(260u, MAX_PATH)
+    }
+
+    @Test
+    fun testGenericAccessRights() {
+        val read = GenericAccessRights.GENERIC_READ
+        val write = GenericAccessRights.GENERIC_WRITE
+        val execute = GenericAccessRights.GENERIC_EXECUTE
+        val all = GenericAccessRights.GENERIC_ALL
+
+        val readWrite = read or write
+        assertTrue(readWrite.contains(read))
+        assertTrue(readWrite.contains(write))
+        assertFalse(readWrite.contains(execute))
+        assertEquals(read, readWrite and read)
+        assertEquals(0x80000000u, read.value)
+        assertEquals(0x40000000u, write.value)
+        assertEquals(0x20000000u, execute.value)
+        assertEquals(0x10000000u, all.value)
+    }
+
+    @Test
+    fun testObjectAttributeFlags() {
+        val inherit = ObjectAttributeFlags.OBJ_INHERIT
+        val caseInsensitive = ObjectAttributeFlags.OBJ_CASE_INSENSITIVE
+        val combined = inherit or caseInsensitive
+        assertTrue(combined.contains(inherit))
+        assertTrue(combined.contains(caseInsensitive))
+        assertEquals(66u, combined.value)
+    }
+
+    @Test
+    fun testWaitEvent() {
+        val ok = WaitEvent.WAIT_OBJECT_0
+        val timeout = WaitEvent.WAIT_TIMEOUT
+        val failed = WaitEvent.WAIT_FAILED
+        assertEquals(0u, ok.value)
+        assertEquals(258u, timeout.value)
+        assertEquals(0xFFFFFFFFu, failed.value)
+    }
+
+    @Test
+    fun testAdditionalHandles() {
+        val hinstance = HINSTANCE(0L)
+        assertTrue(hinstance.isInvalid())
+        assertTrue(hinstance.isNull())
+
+        val hmodule = HMODULE(100L)
+        assertFalse(hmodule.isInvalid())
+        assertFalse(hmodule.isNull())
+
+        val hlsurf = HLSURF(0L)
+        assertTrue(hlsurf.isNull())
+
+        val hsprite = HSPRITE(0L)
+        assertTrue(hsprite.isNull())
+
+        val hstr = HSTR(0L)
+        assertTrue(hstr.isNull())
+
+        val humpd = HUMPD(0L)
+        assertTrue(humpd.isNull())
+
+        val handlePtr = HANDLE_PTR(1234uL)
+        assertEquals(1234uL, handlePtr.value)
+
+        val shandlePtr = SHANDLE_PTR(-1L)
+        assertEquals(-1L, shandlePtr.value)
+    }
+
+    @Test
+    fun testFloat128AndAppLocalDeviceId() {
+        val f128 = FLOAT128(10L, 20L)
+        assertEquals(10L, f128.lowPart)
+        assertEquals(20L, f128.highPart)
+
+        val devId = APP_LOCAL_DEVICE_ID()
+        assertEquals(32, devId.value.size)
+        assertEquals(32u, APP_LOCAL_DEVICE_ID_SIZE)
+
+        val devId2 = APP_LOCAL_DEVICE_ID()
+        assertEquals(devId, devId2)
+        assertEquals(devId.hashCode(), devId2.hashCode())
+    }
+
+    @Test
+    fun testUnicodeString() {
+        val str = UNICODE_STRING(8u, 16u, "Test")
+        assertEquals(8u.toUShort(), str.length)
+        assertEquals(16u.toUShort(), str.maximumLength)
+        assertEquals("Test", str.buffer)
     }
 }
