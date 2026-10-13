@@ -32,6 +32,7 @@ import io.github.kotlinmania.windows.win32.foundation.RECT
 import io.github.kotlinmania.windows.win32.foundation.RECTL
 import io.github.kotlinmania.windows.win32.foundation.SHANDLE_PTR
 import io.github.kotlinmania.windows.win32.foundation.SIZE
+import io.github.kotlinmania.windows.win32.foundation.SYSTEMTIME
 import io.github.kotlinmania.windows.win32.foundation.UNICODE_STRING
 import io.github.kotlinmania.windows.win32.foundation.VariantBool
 import io.github.kotlinmania.windows.win32.foundation.WPARAM
@@ -44,6 +45,8 @@ import io.github.kotlinmania.windows.win32.foundation.isOk
 import io.github.kotlinmania.windows.win32.foundation.not
 import io.github.kotlinmania.windows.win32.foundation.ok
 import io.github.kotlinmania.windows.win32.foundation.toHresult
+import io.github.kotlinmania.windows.win32.foundation.toSys
+import io.github.kotlinmania.windows.win32.foundation.toWindows
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -305,5 +308,43 @@ class Win32FoundationTest {
         assertEquals(8u.toUShort(), str.length)
         assertEquals(16u.toUShort(), str.maximumLength)
         assertEquals("Test", str.buffer)
+    }
+
+    @Test
+    fun testSysBridge() {
+        val rect = RECT(1, 2, 3, 4)
+        val sysRect = rect.toSys()
+        assertEquals(rect.left, sysRect.left)
+        assertEquals(rect.top, sysRect.top)
+        assertEquals(rect.right, sysRect.right)
+        assertEquals(rect.bottom, sysRect.bottom)
+        assertEquals(rect, sysRect.toWindows())
+
+        val pt = POINT(10, 20)
+        assertEquals(pt, pt.toSys().toWindows())
+
+        val ptl = POINTL(100, 200)
+        assertEquals(ptl, ptl.toSys().toWindows())
+
+        val pts = POINTS(5, 6)
+        assertEquals(pts, pts.toSys().toWindows())
+
+        val rectl = RECTL(10, 20, 30, 40)
+        assertEquals(rectl, rectl.toSys().toWindows())
+
+        val size = SIZE(800, 600)
+        assertEquals(size, size.toSys().toWindows())
+
+        val ft = FILETIME(123u, 456u)
+        assertEquals(ft, ft.toSys().toWindows())
+
+        val st = SYSTEMTIME(2026u, 10u, 2u, 13u, 9u, 8u, 0u, 0u)
+        assertEquals(st, st.toSys().toWindows())
+
+        val f128 = FLOAT128(12345L, 67890L)
+        assertEquals(f128, f128.toSys().toWindows())
+
+        val err = Win32Error.ERROR_ACCESS_DENIED
+        assertEquals(err, err.toSys().toWindows())
     }
 }
