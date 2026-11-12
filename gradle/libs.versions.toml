@@ -11,6 +11,8 @@ ktlintEngine = "1.8.0"
 kotlinxBenchmark = "0.5.0"
 windowsSys = "0.1.0"
 
+androidxTestRunner = "1.7.0"
+
 [plugins]
 android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "androidKmp" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
@@ -30,6 +32,8 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "collectionsImmutable" }
 kotlinx-benchmark-runtime = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-runtime", version.ref = "kotlinxBenchmark" }
 windows-sys-kotlin = { module = "io.github.kotlinmania:windows-sys-kotlin", version.ref = "windowsSys" }
+
+androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidxTestRunner" }
 
 [bundles]
 windows-commonMain = [
